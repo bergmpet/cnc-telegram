@@ -83,10 +83,18 @@ def parse_payload(command):
 
 
 def send_answer(message, chat_id):
-    answer = get_json(URL + "/sendMessage?text={}&chat_id={}&parse_mode={}".format(message, chat_id, "html"))
-    if (answer is None) or (not answer["ok"]):
-        print("Wrong answer")
-        return
+    start = 0
+    end = min(message.len(), MAX_MESSAGE_LENGTH)
+    while True:
+        answer = get_json(URL + "/sendMessage?text={}&chat_id={}&parse_mode={}".format(message[start, end], chat_id, "html"))
+        if (answer is None) or (not answer["ok"]):
+            print("Wrong answer")
+            return
+
+        if message.len() - end < MAX_MESSAGE_LENGTH:
+            break
+        start = end
+        end = min(message.len(), start + MAX_MESSAGE_LENGTH)
 
 
 if __name__ == "__main__":
