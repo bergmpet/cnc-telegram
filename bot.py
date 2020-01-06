@@ -1,9 +1,9 @@
+import os
 import requests
 import json
 from authorization import TOKEN
 
 URL = "https://api.telegram.org/bot{}".format(TOKEN)
-
 
 def get_status():
     answer = requests.get(URL + "/getme")
@@ -20,17 +20,36 @@ def get_json(url):
     return None
 
 
+def mark_read(offset):
+    answer = get_json(URL + "/getUpdates?offset={}".format(offset))
+
+
 def get_updates():
     answer = get_json(URL + "/getUpdates")
     if answer is None and answer["ok"]:
         return
 
-    # testing
     print(answer)
-    data = answer["result"][0]
-    print(data)
-    print(data["message"])
+
+    for result in answer["result"]:
+        yield result
+
+
+def list_files(path):
+    return os.listdir(path)
+
+
+def parse_payload(command):
+    if command == "ls":
+        files = list_files("./")
+        print(files)
 
 
 if __name__ == "__main__":
-    get_updates()
+    update_id = 0
+
+    for update in get_updates():
+        update_id = update["update_id"] + 1
+        print(update)
+        parse_payload(update["message"]["text"])
+    #mark_read(update_id)
