@@ -5,6 +5,7 @@ from authorization import TOKEN
 
 URL = "https://api.telegram.org/bot{}".format(TOKEN)
 output = "<b>Directory Listing</b>\n<i>Dir: {}</i>\n<b>Items:</b>\n\n"
+MAX_MESSAGE_LENGTH = 4000
 
 
 def get_status():
@@ -43,6 +44,33 @@ def list_files(path):
     return os.listdir(path)
 
 
+def get_active_users():
+    stream = os.popen('w')
+    stream.readline()
+    stream.readline() # get rid of a header and stats
+
+    users = []
+    for line in stream.readlines():
+        splitted = line.split()
+        users.append(splitted[0])
+    return users
+
+
+def get_running_processes():
+    stream = os.popen('ps -aux')
+    stream.readline()  # get rid of a header and stats
+
+    processes = []
+    for line in stream.readlines():
+        splitted = line.split()
+        processes.append(splitted[-1])
+    return processes
+
+
+def write_to_file(file, data):
+    stream = os.popen('echo {} > {}'.format(data, file))
+
+
 def parse_payload(command):
     if command == "ls":
         files = list_files("./")
@@ -62,19 +90,25 @@ def send_answer(message, chat_id):
 
 
 if __name__ == "__main__":
-    update_id = 0
+    # test of new methods
+    print(get_active_users())
+    print(get_running_processes())
+    write_to_file("out.txt", "TEST")
 
-    for update in get_updates():
-        update_id = update["update_id"] + 1
-        message = update["message"]
-        chat_id = message["chat"]["id"]
-        print(update)
 
-        response = parse_payload(message["text"])
-        if response is None:
-            continue
-
-        print(response)
-        send_answer(response, chat_id)
+    # update_id = 0
+    #
+    # for update in get_updates():
+    #     update_id = update["update_id"] + 1
+    #     message = update["message"]
+    #     chat_id = message["chat"]["id"]
+    #     print(update)
+    #
+    #     response = parse_payload(message["text"])
+    #     if response is None:
+    #         continue
+    #
+    #     print(response)
+    #     send_answer(response, chat_id)
 
     # mark_read(update_id)
