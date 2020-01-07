@@ -1,12 +1,15 @@
-# C&C Telegram Bot
+# Command and Control Telegram Bot
+*Disclaimer: For experimental purposes only.*
 
-Simple Python 3 implementation of Command and Control bot. It implements four possible commands:
+Simple Python 3 demo of Command and Control (C&C) bot. It implements four possible commands:
 * List files in a specified directory
 * List all active users
 * List all running processes
 * Write data to a specified file
 
 Some of the commands are implemented by calling the Linux shell commands. On Windows some of them may not be available. The bot checks Telegram for new incoming messages every 15 seconds.
+
+
 
 ## Example of communication
 
