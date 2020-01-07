@@ -8,6 +8,8 @@ Simple Python 3 implementation of Command and Control bot. It implements four po
 
 Some of the commands are implemented by calling the Linux shell commands. On Windows some of them may not be available. The bot checks Telegram for new incoming messages every 15 seconds.
 
+## Example of communication
+
 ![Communication](./imgs/comm.gif)
 
 ## Installation
@@ -21,8 +23,8 @@ In your Telegram application simply start conversation with your bot. Once it's 
 
 ## Commands
 
-> Directory listing: `ls [path]`  
-> Show active users: `users`  
-> Show running processes: `processes`  
-> Write to file: `write [path] [data]`  
-> Terminate the application: `terminate`  
+* Directory listing: `ls [path]`  
+* Show active users: `users`  
+* Show running processes: `processes`  
+* Write to file: `write [path] [data]`  
+* Terminate the application: `terminate`  
